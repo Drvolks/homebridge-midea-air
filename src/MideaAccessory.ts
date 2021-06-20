@@ -368,19 +368,7 @@ export class MideaAccessory {
 	};
 	// Get the current value of the "RotationSpeed" characteristic
 	public rotationSpeed() {
-		// values from device are 20.0="Silent",40.0="Low",60.0="Medium",80.0="High",102.0="Auto"
-		// convert to good usable slider in homekit in percent
-		let currentValue = 0;
-		if (this.fanSpeed === 40) {
-			currentValue = 25;
-		} else if (this.fanSpeed === 60) {
-			currentValue = 50;
-		} else if (this.fanSpeed === 80) {
-			currentValue = 75;
-		} else {
-			currentValue = 100;
-		};
-		return currentValue;
+		return this.fanSpeed ;
 	};
 	// Handle requests to get the current value of the "RotationSpeed" characteristic
 	handleRotationSpeedGet(callback: CharacteristicGetCallback) {
@@ -393,15 +381,7 @@ export class MideaAccessory {
 		// transform values in percent
 		// values from device are 20.0="Silent",40.0="Low",60.0="Medium",80.0="High",102.0="Auto"
 		if (this.fanSpeed !== value) {
-			if (value <= 25) {
-				this.fanSpeed = 40;
-			} else if (value > 25 && value <= 50) {
-				this.fanSpeed = 60;
-			} else if (value > 50 && value <= 75) {
-				this.fanSpeed = 80;
-			} else {
-				this.fanSpeed = 102;
-			};
+			this.fanSpeed = Number(value);
 			this.platform.sendUpdateToDevice(this);
 		};
 		callback(null);
@@ -567,17 +547,7 @@ export class MideaAccessory {
 	};
 	// Get the current value of the "WindSpeed" characteristic
 	public windSpeed() {
-		// values from device are 40.0="Silent",60.0="Medium",80.0="High"
-		// convert to good usable slider in homekit in percent
-		let currentValue = 0;
-		if (this.fanSpeed === 40) {
-			currentValue = 30;
-		} else if (this.fanSpeed === 60) {
-			currentValue = 60;
-		} else if (this.fanSpeed = 80) {
-			currentValue = 100;
-		};
-		return currentValue;
+		return this.fanSpeed;
 	};
 	// Handle requests to get the current value of the "WindSpeed" characteristic
 	handleWindSpeedGet(callback: CharacteristicGetCallback) {
@@ -586,18 +556,11 @@ export class MideaAccessory {
 	};
 	// Handle requests to set the "RotationSpeed" characteristic
 	handleWindSpeedSet(value: CharacteristicValue, callback: CharacteristicSetCallback) {
-		this.platform.log.debug('Triggered SET WindSpeed To:', value);
-		// transform values in percent
-		// values from device are 20.0="Silent",60.0="Medium",80.0="High"
-		if (value <= 30) {
-			this.fanSpeed = 40;
-		} else if (value > 30 && value <= 60) {
-			this.fanSpeed = 60;
-		} else if (value > 60 && value <= 100) {
-			this.fanSpeed = 80;
-		};
+		this.platform.log.info('Triggered SET WindSpeed To:', value);
+		this.fanSpeed = Number(value);
 		this.platform.sendUpdateToDevice(this);
 		callback(null);
+
 	};
 	// Handle requests to get the current value of the "WaterLevel" characteristic
 	handleWaterLevelGet(callback: CharacteristicGetCallback) {

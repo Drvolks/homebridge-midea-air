@@ -1,6 +1,6 @@
 {
-    "name": "homebridge-midea-air",
-    "version": "1.2.6",
+    "name": "homebridge-midea-air-jfd",
+    "version": "1.2.7",
     "description": "Homebridge plugin for Midea AC units",
     "repository": {
         "type": "git",
@@ -25,7 +25,10 @@
     "dependencies": {
         "axios": "^0.21.1",
         "axios-cookiejar-support": "^1.0.1",
+        "crypto": "^1.0.1",
+        "events": "^3.3.0",
         "node-tunnel": "^4.0.0",
+        "os": "^0.1.1",
         "querystring": "^0.2.1",
         "tough-cookie": "^4.0.0",
         "traverse": "^0.6.6",
