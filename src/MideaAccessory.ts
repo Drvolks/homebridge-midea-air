@@ -143,51 +143,15 @@ export class MideaAccessory {
 
 			// Update HomeKit
 			setInterval(() => {
-				try {
-					this.service.updateCharacteristic(this.platform.Characteristic.Active, this.powerState);
-				} catch (err) {
-					this.platform.log.warn(`Erreur updating platform.Characteristic.Active : ${err}`);
-				}
-				try {
-					this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.currentHeaterCoolerState());
-				} catch (err) {
-					this.platform.log.warn(`Erreur updating platform.Characteristic.CurrentHeaterCoolerState : ${err}`);
-				}
-				try {
-					this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.targetHeaterCoolerState());
-				} catch (err) {
-					this.platform.log.warn(`Erreur updating platform.Characteristic.TargetHeaterCoolerState : ${err}`);
-				}
-				try {
-					this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.indoorTemperature);
-				} catch (err) {
-					this.platform.log.warn(`Erreur updating platform.Characteristic.CurrentTemperature : ${err}`);
-				}
-				try {
-					this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.targetTemperature);
-				} catch (err) {
-					this.platform.log.warn(`Erreur updating platform.Characteristic.CoolingThresholdTemperature : ${err}`);
-				}
-				try {
-					this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.targetTemperature);
-				} catch (err) {
-					this.platform.log.warn(`Erreur updating platform.Characteristic.HeatingThresholdTemperature : ${err}`);
-				}
-				try {
-					this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.rotationSpeed());
-				} catch (err) {
-					this.platform.log.warn(`Erreur updating platform.Characteristic.RotationSpeed : ${err}`);
-				}
-				try {
-					this.service.updateCharacteristic(this.platform.Characteristic.SwingMode, this.SwingMode());
-				} catch (err) {
-					this.platform.log.warn(`Erreur updating platform.Characteristic.SwingMode : ${err}`);
-				}
-				try {
-					this.service.updateCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits, this.useFahrenheit);
-				} catch (err) {
-					this.platform.log.warn(`Erreur updating platform.Characteristic.TemperatureDisplayUnits : ${err}`);
-				}
+				this.service.updateCharacteristic(this.platform.Characteristic.Active, this.powerState);
+				this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.currentHeaterCoolerState());
+				this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.targetHeaterCoolerState());
+				this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.indoorTemperature);
+				this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.targetTemperature);
+				this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.targetTemperature);
+				this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.rotationSpeed());
+				this.service.updateCharacteristic(this.platform.Characteristic.SwingMode, this.SwingMode());
+				this.service.updateCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits, this.useFahrenheit);
 			}, 5000);
 
 			// Fan Mode
@@ -206,21 +170,9 @@ export class MideaAccessory {
 					.on('set', this.handleSwingModeSet.bind(this));
 
 				setInterval(() => {
-					try {
-						this.fanService.updateCharacteristic(this.platform.Characteristic.Active, this.fanActive());
-					} catch (err) {
-						this.platform.log.warn(`Erreur updating platform.Characteristic.Active (fan) : ${err}`);
-					}
-					try {
-						this.fanService.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.rotationSpeed());
-					} catch (err) {
-						this.platform.log.warn(`Erreur updating platform.Characteristic.RotationSpeed (fan) : ${err}`);
-					}
-					try {
-						this.fanService.updateCharacteristic(this.platform.Characteristic.SwingMode, this.SwingMode());
-					} catch (err) {
-						this.platform.log.warn(`Erreur updating platform.Characteristic.SwingMode (fan) : ${err}`);
-					}
+					this.fanService.updateCharacteristic(this.platform.Characteristic.Active, this.fanActive());
+					this.fanService.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.rotationSpeed());
+					this.fanService.updateCharacteristic(this.platform.Characteristic.SwingMode, this.SwingMode());
 				}, 5000);
 
 			} else {
