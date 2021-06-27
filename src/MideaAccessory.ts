@@ -291,7 +291,7 @@ export class MideaAccessory {
 			return this.platform.Characteristic.CurrentHeaterCoolerState.INACTIVE;
 		} else if (this.operationalMode === MideaOperationalMode.Cooling) {
 			return this.platform.Characteristic.CurrentHeaterCoolerState.COOLING;
-		} else if (this.operationalMode === MideaOperationalMode.Heating) {
+		} else if (this.operationalMode === MideaOperationalMode.Dry) {
 			return this.platform.Characteristic.CurrentHeaterCoolerState.HEATING;
 		} else if (this.indoorTemperature > this.targetTemperature) {
 			return this.platform.Characteristic.CurrentHeaterCoolerState.HEATING;
@@ -308,7 +308,7 @@ export class MideaAccessory {
 	public targetHeaterCoolerState() {
 		if (this.operationalMode === MideaOperationalMode.Cooling) {
 			return this.platform.Characteristic.TargetHeaterCoolerState.COOL;
-		} else if (this.operationalMode === MideaOperationalMode.Heating) {
+		} else if (this.operationalMode === MideaOperationalMode.Dry) {
 			return this.platform.Characteristic.TargetHeaterCoolerState.HEAT;
 		} else return this.platform.Characteristic.TargetHeaterCoolerState.AUTO;
 	};
@@ -321,13 +321,13 @@ export class MideaAccessory {
 	handleTargetHeaterCoolerStateSet(value: CharacteristicValue, callback: CharacteristicSetCallback) {
 		if (this.targetHeaterCoolerState() !== value) {
 			this.platform.log.debug('Triggered SET HeaterCooler State To:', value);
-			if (value === this.platform.Characteristic.TargetHeaterCoolerState.AUTO) {
-				this.operationalMode = MideaOperationalMode.Auto;
-			} else if (value === this.platform.Characteristic.TargetHeaterCoolerState.COOL) {
+			if (value === this.platform.Characteristic.TargetHeaterCoolerState.COOL) {
 				this.operationalMode = MideaOperationalMode.Cooling;
 			} else if (value === this.platform.Characteristic.TargetHeaterCoolerState.HEAT) {
-				this.operationalMode = MideaOperationalMode.Heating;
-			};
+				this.operationalMode = MideaOperationalMode.Dry;
+			} else {
+				this.operationalMode = MideaOperationalMode.Auto;
+			}
 			this.platform.sendUpdateToDevice(this);
 		};
 		callback(null);
@@ -459,7 +459,7 @@ export class MideaAccessory {
 	// Fan mode
 	// Get the current value of the "FanActive" characteristic
 	public fanActive() {
-		if (this.operationalMode === MideaOperationalMode.FanOnly && this.powerState === this.platform.Characteristic.Active.ACTIVE) {
+		if (this.operationalMode === MideaOperationalMode.FanOnly || this.powerState === this.platform.Characteristic.Active.ACTIVE) {
 			return this.platform.Characteristic.Active.ACTIVE;
 		} else {
 			return this.platform.Characteristic.Active.INACTIVE;
