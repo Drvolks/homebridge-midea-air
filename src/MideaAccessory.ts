@@ -389,7 +389,13 @@ export class MideaAccessory {
 		// transform values in percent
 		// values from device are 20.0="Silent",40.0="Low",60.0="Medium",80.0="High",102.0="Auto"
 		if (this.fanSpeed !== value) {
-			this.fanSpeed = Number(value);
+			if (value <= 0) {
+				this.fanSpeed = 1;
+			} else if (value > 100) {
+				this.fanSpeed = 100;
+			} else {
+				this.fanSpeed = Number(value);
+			}	
 			this.platform.sendUpdateToDevice(this);
 		};
 		callback(null);
@@ -565,7 +571,13 @@ export class MideaAccessory {
 	// Handle requests to set the "RotationSpeed" characteristic
 	handleWindSpeedSet(value: CharacteristicValue, callback: CharacteristicSetCallback) {
 		this.platform.log.info('Triggered SET WindSpeed To:', value);
-		this.fanSpeed = Number(value);
+		if (value <= 0) {
+			this.fanSpeed = 1;
+		} else if (value > 100) {
+			this.fanSpeed = 100;
+		} else {
+			this.fanSpeed = Number(value);
+		}
 		this.platform.sendUpdateToDevice(this);
 		callback(null);
 
