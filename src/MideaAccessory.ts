@@ -293,8 +293,6 @@ export class MideaAccessory {
 			return this.platform.Characteristic.CurrentHeaterCoolerState.COOLING;
 		} else if (this.operationalMode === MideaOperationalMode.Dry) {
 			return this.platform.Characteristic.CurrentHeaterCoolerState.HEATING;
-		} else if (this.indoorTemperature > this.targetTemperature) {
-			return this.platform.Characteristic.CurrentHeaterCoolerState.HEATING;
 		} else {
 			return this.platform.Characteristic.CurrentHeaterCoolerState.COOLING;
 		};
@@ -473,9 +471,7 @@ export class MideaAccessory {
 	// Handle requests to set the "Fan Mode" characteristic
 	handleFanActiveSet(value: CharacteristicValue, callback: CharacteristicSetCallback) {
 		this.platform.log.debug('Triggered SET FanMode To:', value);
-		if (value === 1 && this.powerState === 1) {
-			this.operationalMode = MideaOperationalMode.FanOnly;
-		} else if (value === 1 && this.powerState === 0) {
+		if (value === 1 && this.powerState === 0) {
 			this.powerState = this.platform.Characteristic.Active.ACTIVE;
 			this.operationalMode = MideaOperationalMode.FanOnly;
 		} else if (value === 0 && this.powerState === 1) {
