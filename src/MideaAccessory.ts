@@ -474,10 +474,12 @@ export class MideaAccessory {
 		if (value === 1 && this.powerState === 0) {
 			this.powerState = this.platform.Characteristic.Active.ACTIVE;
 			this.operationalMode = MideaOperationalMode.FanOnly;
+			this.platform.sendUpdateToDevice(this);
 		} else if (value === 0 && this.powerState === 1) {
 			this.powerState = this.platform.Characteristic.Active.INACTIVE;
+			this.platform.sendUpdateToDevice(this);
 		};
-		this.platform.sendUpdateToDevice(this);
+		
 		callback(null);
 	};
 
