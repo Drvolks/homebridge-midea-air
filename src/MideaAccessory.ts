@@ -157,7 +157,9 @@ export class MideaAccessory {
 				} else {
 					this.platform.log.debug("Not updating HeatingThresholdTemperature and HeatingThresholdTemperature, targetTemperature has an invalid value");
 				} 
-				this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.rotationSpeed());
+				this.fanService.getCharacteristic(this.platform.Characteristic.RotationSpeed)
+					.on('get', this.handleRotationSpeedGet.bind(this))
+					.on('set', this.handleRotationSpeedSet.bind(this));
 				this.service.updateCharacteristic(this.platform.Characteristic.SwingMode, this.SwingMode());
 				this.service.updateCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits, this.useFahrenheit);
 			}, 5000);
