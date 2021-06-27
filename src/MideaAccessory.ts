@@ -376,7 +376,13 @@ export class MideaAccessory {
 	};
 	// Get the current value of the "RotationSpeed" characteristic
 	public rotationSpeed() {
-		return this.fanSpeed ;
+		if (this.fanSpeed < 0) {
+			return 0;
+		} else if (this.fanSpeed > 100) {
+			return 100;
+		} else {
+			return this.fanSpeed;
+		}	
 	};
 	// Handle requests to get the current value of the "RotationSpeed" characteristic
 	handleRotationSpeedGet(callback: CharacteristicGetCallback) {
