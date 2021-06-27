@@ -190,6 +190,7 @@ export class MideaPlatform implements DynamicPlatformPlugin {
 									var ma = new MideaAccessory(this, accessory, currentElement.id, parseInt(currentElement.type), currentElement.name, currentElement.userId)
 									this.api.registerPlatformAccessories('homebridge-midea-air', 'midea-air', [accessory])
 									this.mideaAccessories.push(ma)
+									this.configureAccessory(accessory)
 								};
 								// this.log.debug('mideaAccessories now contains', this.mideaAccessories)
 							} else {
