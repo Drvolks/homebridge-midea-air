@@ -143,12 +143,20 @@ export class MideaAccessory {
 
 			// Update HomeKit
 			setInterval(() => {
-				this.service.updateCharacteristic(this.platform.Characteristic.Active, this.powerState);
+				if (this.powerState !== undefined) {
+					this.service.updateCharacteristic(this.platform.Characteristic.Active, this.powerState);
+				} else {
+					this.platform.log.debug("Not updating Active, powerState is undefined");
+				} 
 				this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.currentHeaterCoolerState());
 				this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.targetHeaterCoolerState());
 				this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.indoorTemperature);
-				this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.targetTemperature);
-				this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.targetTemperature);
+				if (this.targetTemperature >= 17) {
+					this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.targetTemperature);
+					this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.targetTemperature);
+				} else {
+					this.platform.log.debug("Not updating HeatingThresholdTemperature and HeatingThresholdTemperature, targetTemperature has an invalid value");
+				} 
 				this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.rotationSpeed());
 				this.service.updateCharacteristic(this.platform.Characteristic.SwingMode, this.SwingMode());
 				this.service.updateCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits, this.useFahrenheit);
