@@ -245,6 +245,7 @@ export class MideaPlatform implements DynamicPlatformPlugin {
 						};
 						if (response.data.errorCode == 3106) {
 							this.log.debug(`Invalid Session`);
+							this.login();
 							resolve();
 							return;
 						};
