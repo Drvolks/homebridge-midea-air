@@ -8,13 +8,15 @@ export class MideaAccessory {
 
 	public deviceId: string = ''
 	public deviceType: MideaDeviceType = MideaDeviceType.AirConditioner
-	public targetTemperature: any = 0
+	public targetTemperature: any = 24
 	public indoorTemperature: number = 0
 	public outdoorTemperature: number = 0
+	// Default unit is Celcius. this is just to control the temperatue unit of the AC's display.
+	// The target temperature setter always expects a celcius temperature (resolution of 0.5C), as does the midea API
 	public useFahrenheit: boolean = false
 
 	public currentHumidity: number = 0
-	public targetHumidity: any = 0
+	public targetHumidity: any = 35
 	public waterLevel: number = 0
 
 	public fanSpeed: number = 0
@@ -22,15 +24,16 @@ export class MideaAccessory {
 	public temperatureSteps: number = 1
 	public minTemperature: number = 17
 	public maxTemperature: number = 30
-	public powerState: any
+	public powerState: any = 0
 	public supportedSwingMode: MideaSwingMode = MideaSwingMode.None
 	public operationalMode: number = MideaOperationalMode.Off
 	public swingMode: number = 0
 	public ecoMode: boolean = false
+	public turboMode: boolean = false
 	public name: string = ''
 	public model: string = ''
 	public userId: string = ''
-	public firmwareVersion: string = '1.2.6'
+	public firmwareVersion = require('../package.json').version;
 
 	private service!: Service
 	private fanService!: Service
@@ -166,7 +169,7 @@ export class MideaAccessory {
 			if (this.platform.getDeviceSpecificOverrideValue(this.deviceId, 'fanOnlyMode') == true) {
 				this.platform.log.debug('Add Fan Mode');
 				this.fanService = this.accessory.getService(this.platform.Service.Fanv2) || this.accessory.addService(this.platform.Service.Fanv2);
-				this.fanService.setCharacteristic(this.platform.Characteristic.Name, 'Fan');
+				this.fanService.setCharacteristic(this.platform.Characteristic.Name, 'Fan Mode');
 				this.fanService.getCharacteristic(this.platform.Characteristic.Active)
 					.on('get', this.handleFanActiveGet.bind(this))
 					.on('set', this.handleFanActiveSet.bind(this));
@@ -242,12 +245,12 @@ export class MideaAccessory {
 			// 		maxValue: 85,
 			// 		minStep: 5
 			// 	})
-			// this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
-			// 	.on('get', this.handleWindSpeedGet.bind(this))
-			// 	.on('set', this.handleWindSpeedSet.bind(this))
-			// this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
-			// 	.on('get', this.handleSwingModeGet.bind(this))
-			// 	.on('set', this.handleSwingModeSet.bind(this))
+			this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
+				.on('get', this.handleWindSpeedGet.bind(this))
+				.on('set', this.handleWindSpeedSet.bind(this))
+			this.service.getCharacteristic(this.platform.Characteristic.SwingMode)
+				.on('get', this.handleSwingModeGet.bind(this))
+				.on('set', this.handleSwingModeSet.bind(this))
 			this.service.getCharacteristic(this.platform.Characteristic.WaterLevel)
 				.on('get', this.handleWaterLevelGet.bind(this))
 
@@ -259,8 +262,8 @@ export class MideaAccessory {
 				this.service.updateCharacteristic(this.platform.Characteristic.CurrentRelativeHumidity, this.currentHumidity);
 				this.service.updateCharacteristic(this.platform.Characteristic.RelativeHumidityDehumidifierThreshold, this.targetHumidity);
 				// this.service.updateCharacteristic(this.platform.Characteristic.RelativeHumidityHumidifierThreshold, this.targetHumidity);
-				// this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.windSpeed());
-				// 	this.service.updateCharacteristic(this.platform.Characteristic.SwingMode, this.SwingMode());
+				this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.windSpeed());
+				this.service.updateCharacteristic(this.platform.Characteristic.SwingMode, this.SwingMode());
 				this.service.updateCharacteristic(this.platform.Characteristic.WaterLevel, this.waterLevel);
 			}, 5000);
 		} else {

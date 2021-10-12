@@ -21,9 +21,9 @@ If you like this plugin or want to contribute to future development, a donation 
 
 ## Requirements
 
-<img src="https://img.shields.io/badge/node-%3E%3D10.17-brightgreen"> &nbsp;
-<img src="https://img.shields.io/badge/homebridge-%3E%3D1.0.0-brightgreen"> &nbsp;
-<img src="https://img.shields.io/badge/iOS-%3E%3D12.0.0-brightgreen">
+<img src="https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen"> &nbsp;
+<img src="https://img.shields.io/badge/homebridge-%3E%3D1.3.0-brightgreen"> &nbsp;
+<img src="https://img.shields.io/badge/iOS-%3E%3D14.0.0-brightgreen">
 
 <SPAN ALIGN="Left">
 
@@ -46,19 +46,25 @@ Add this to the platforms array in your config.json:
         "platform": "midea-air"
     }
 
-# This plugin don't support OSK103 dongle.
+## Notes
+
+Using the Midea app and `Homebridge Midea Air plugin` at the same time causes a login error. Try to use [NetHome Plus](https://apps.apple.com/us/app/nethome-plus/id1008001920) app instead.
+
+## Supported Devices
+
+This Plugin support Midea providers dongle - OSK102 / OSK103 (Hualing, Senville, Klimaire, AirCon, Century, Pridiom, Thermocore, Comfee, Alpine Home Air, Artel, Beko, Electrolux, Galactic, Idea, Inventor, Kaisai, Mitsui, Mr. Cool, Neoclima, Olimpia Splendid, Pioneer, QLIMA, Royal Clima, Qzen, Toshiba, Carrier, Goodman, Friedrich, Samsung, Kenmore, Trane, Lennox, LG, Electra and much more) and should be able to access all device in the user's account. However, many devices may not be supported or function incorrectly. This is due to the lack of documentation of the raw MSmart API. If you encounter any problems, please open a new issue and specify your device model.
 
 ## Optional per-device Configuration Values
 
 To set specific per-device values, you need to add deviceId that can find in:
 
 1. Homebridge console log.
-2. Home app in the devices object.
+2. HomeKit app, device settings, info.
 
 ### Temperature Display Units
 
-This Plugin support Celsius & Fahrenheit (Default Temperature Unit is Celsius).
-Display Units can set in HomeKit device settings.
+This Plugin support Celsius & Fahrenheit (Default unit is Celcius).
+Display Units can set in HomeKit app, device settings.
 
 ### Supported Swing Mode
 
@@ -67,13 +73,15 @@ You have to select which type your device supports.
 
 ### Rotation Speed and Swing
 
-Rotation Speed and Swing mode can set in the HomeKit device settings.
+Rotation Speed and Swing mode can set in the HomeKit app, device settings.
 Rotation Speed values are:
-0%: device off
-/ 25%: Low
-/ 50%: Middle
-/ 75%: High
-/ 100%: Auto
+| Air Conditioner | Dehumidifier |
+| --- | --- |
+| 0% Device off | 0% Device off |
+| 25% Low | 30% Silent |
+| 50% Middle | 60% Medium
+| 75% High | 100% High |
+| 100% Auto | ... |
 
 ### Fan Mode
 
@@ -83,10 +91,6 @@ This allows you to enable a Fan mode service.
 
 This allows you to enable Outdoor Temperature service, if the AC support.
 
-## Notes
-
-This version of `homebridge-midea-air` is a platform and should be able to access all device in the user's account. However, many devices may not be supported or function incorrectly. This is due to the lack of documentation of the raw MSmart API. If you encounter any problems, please open a new issue and specify your device model.
-
 ## Credits
 
-This plugin is based on the project [ttimpe/homebridge-midea](https://github.com/ttimpe/homebridge-midea) and would not have been possible without the fundamentals that the Midea iobroker plugin and all of the other Midea API clients in Ruby and Python provided.
+This plugin is based on the project [ttimpe/homebridge-midea](https://github.com/ttimpe/homebridge-midea) and would not have been possible without the fundamentals that the [ioBroker.midea](https://github.com/TA2k/ioBroker.midea) plugin and all of the other Midea API clients in Ruby and Python provided.
